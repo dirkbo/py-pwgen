@@ -19,10 +19,76 @@
 #       along with this program; if not, write to the Free Software
 #       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #       MA 02110-1301, USA.
-def getword():
+
+def is_pattern(pattern):
+    """
+    checks wether pattern is a valid passwordpattern
+    e.g. aaaAAbbcc
+    """
+    for p in pattern:
+        if p == 'a':
+            continue
+        elif p == 'A':
+            continue
+        elif p == 'b':
+            continue
+        elif p == 'c':
+            continue
+        else:
+            return False
+    return True
+
+def pwgen(pattern, a='abcdefghijklmnopqrstuvwxyz', A='ABCDEFGHIJKLMNOPQRSTUVWXYZ', b='1234567890', c='!$%&=_-+#'):
+    """
+    generates a password with the given pattern
+    
+    Args:
+        pattern:
+            pattern must contain the characters 'a', 'A', 'b' or 'c'
+            'a' = small latin characters
+            'A' = capital latin characters
+            'b' = numbers
+            'c' = special characters ! $ % & = _ - + #
+        
+        a:
+            range of small latin characters
+        A:
+            range of capital latin characters
+        b:
+            range of numbers
+        c:
+            range of special characters
+    
+    Returns:
+        string
+    """
+    import random
+    
+    pw = []
+    rand = random.Random()
+    
+    for p in pattern:
+        if p == 'a':
+            pw.append(rand.choice(a))
+        elif p == 'A':
+            pw.append(rand.choice(A))
+        elif p == 'b':
+            pw.append(rand.choice(b))
+        elif p == 'c':
+            pw.append(rand.choice(c))
+    
+    return ''.join(pw)
+        
+
+
+def getword(pattern=None):
     import sys
     from random import Random
-
+    
+    if pattern:
+        return pwgen(pattern)
+    
+    
     bereich = "qwertzuiopasdfghjklyxcvbnm"
     #bereich  += "QWERTZUIOPASDFGHJKLYXCVBNM"
     zbereich = "1234567890"
@@ -48,10 +114,16 @@ def main():
     count = 0
     # 100 paswörter erstellen
     for i in range(0,140):
-        w1 = getword()
-        w2 = getword()
-        w3 = getword()
-        w4 = getword()
+        if is_pattern(sys.argv[1]):
+            w1 = getword(pattern=sys.argv[1])
+            w2 = getword(pattern=sys.argv[1])
+            w3 = getword(pattern=sys.argv[1])
+            w4 = getword(pattern=sys.argv[1])
+        else:
+            w1 = getword()
+            w2 = getword()
+            w3 = getword()
+            w4 = getword()
         res += str(count+1) + "\t"+ w1 + "\t" +str(count+2) + "\t"+ w2 + "\t" +str(count+3) + "\t"+w3 + "\t"+ str(count+4) + "\t" + w4 + "\n"
         print str(count+1) + "\t"+ w1 + "\t" +str(count+2) + "\t"+ w2 + "\t" +str(count+3) + "\t"+w3 + "\t"+ str(count+4) + "\t" + w4 + "\n"
         count += 4
