@@ -1,0 +1,1 @@
+Generates about 500 secure Passwords and saves them in a .txt File
