@@ -22,7 +22,7 @@
 
 def is_pattern(pattern):
     """
-    checks wether pattern is a valid passwordpattern
+    checks weather pattern is a valid passwordpattern
     e.g. aaaAAbbcc
     """
     for p in pattern:
@@ -113,17 +113,27 @@ def main():
     res = ""
     count = 0
     # 100 paswörter erstellen
-    for i in range(0,140):
-        if is_pattern(sys.argv[1]):
-            w1 = getword(pattern=sys.argv[1])
-            w2 = getword(pattern=sys.argv[1])
-            w3 = getword(pattern=sys.argv[1])
-            w4 = getword(pattern=sys.argv[1])
-        else:
-            w1 = getword()
-            w2 = getword()
-            w3 = getword()
-            w4 = getword()
+    lines = 140
+    user_pattern = "aaaabbbaaa"
+    try:
+        user_pattern = sys.argv[1]
+    except:
+        pass
+
+    try:
+        lines = int(sys.argv[2])
+    except:
+        pass
+    
+    if not is_pattern(user_pattern):
+        user_pattern = "aaaabbbaaa"
+        
+    for i in range(0,lines):
+        w1 = getword(pattern=user_pattern)
+        w2 = getword(pattern=user_pattern)
+        w3 = getword(pattern=user_pattern)
+        w4 = getword(pattern=user_pattern)
+       
         res += str(count+1) + "\t"+ w1 + "\t" +str(count+2) + "\t"+ w2 + "\t" +str(count+3) + "\t"+w3 + "\t"+ str(count+4) + "\t" + w4 + "\n"
         print str(count+1) + "\t"+ w1 + "\t" +str(count+2) + "\t"+ w2 + "\t" +str(count+3) + "\t"+w3 + "\t"+ str(count+4) + "\t" + w4 + "\n"
         count += 4
