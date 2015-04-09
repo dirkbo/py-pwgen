@@ -20,9 +20,10 @@
 #       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #       MA 02110-1301, USA.
 
+
 def is_pattern(pattern):
     """
-    checks weather pattern is a valid passwordpattern
+    checks whether pattern is a valid passwordpattern
     e.g. aaaAAbbcc
     """
     for p in pattern:
@@ -37,6 +38,7 @@ def is_pattern(pattern):
         else:
             return False
     return True
+
 
 def pwgen(pattern, a='abcdefghijklmnopqrstuvwxyz', A='ABCDEFGHIJKLMNOPQRSTUVWXYZ', b='1234567890', c='!$%&=_-+#'):
     """
@@ -80,7 +82,6 @@ def pwgen(pattern, a='abcdefghijklmnopqrstuvwxyz', A='ABCDEFGHIJKLMNOPQRSTUVWXYZ
     return ''.join(pw)
         
 
-
 def getword(pattern=None):
     import sys
     from random import Random
@@ -107,13 +108,15 @@ def getword(pattern=None):
 
 
 def main():
-    import os, sys
+    import os
+    import sys
     filename = os.path.join("", "pwlist.txt")
     fp = open(filename, "w")
     res = ""
     count = 0
     # 100 paswörter erstellen
     lines = 140
+    offset = 0
     user_pattern = "aaaabbbaaa"
     try:
         user_pattern = sys.argv[1]
@@ -124,22 +127,30 @@ def main():
         lines = int(sys.argv[2])
     except:
         pass
+
+    try:
+        count = int(sys.argv[3])
+    except:
+        pass
     
     if not is_pattern(user_pattern):
         user_pattern = "aaaabbbaaa"
         
-    for i in range(0,lines):
+    for i in range(0, lines):
         w1 = getword(pattern=user_pattern)
         w2 = getword(pattern=user_pattern)
         w3 = getword(pattern=user_pattern)
         w4 = getword(pattern=user_pattern)
        
-        res += str(count+1) + "\t"+ w1 + "\t" +str(count+2) + "\t"+ w2 + "\t" +str(count+3) + "\t"+w3 + "\t"+ str(count+4) + "\t" + w4 + "\n"
-        print str(count+1) + "\t"+ w1 + "\t" +str(count+2) + "\t"+ w2 + "\t" +str(count+3) + "\t"+w3 + "\t"+ str(count+4) + "\t" + w4 + "\n"
+        res += str(count+1) + "\t" + w1 + "\t" + str(count+2) + "\t" + w2 + "\t" + str(count+3) + "\t"+w3 + "\t" + \
+            str(count+4) + "\t" + w4 + "\n"
+        print str(count+1) + "\t" + w1 + "\t" + str(count+2) + "\t" + w2 + "\t" + str(count+3) + "\t"+w3 + "\t" + \
+            str(count+4) + "\t" + w4 + "\n"
         count += 4
     fp.write(res)
     fp.close()
         
     return 0
 
-if __name__ == '__main__': main()
+if __name__ == '__main__':
+    main()
