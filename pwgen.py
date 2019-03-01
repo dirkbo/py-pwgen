@@ -124,30 +124,38 @@ def main():
 
     parser.add_argument(
         '--file',
+        action='store',
         default="pwlist.txt",
         help='Filename to save list of Passwords to. default: pwlist.txt'
     )
 
     parser.add_argument(
         '--pattern',
+        action='store',
         default="aaaabbbaaa",
         help='Provide a pattern for Password creation. aA letters, b Numerics, c Symbols, default: aaaabbbaaa'
     )
 
     parser.add_argument(
         '--lines',
+        action='store',
+        type=int,
         default=140,
         help='Number of lines with passwords to write in file. Default: 140'
     )
 
     parser.add_argument(
         '--perline',
+        action='store',
+        type=int,
         default=4,
         help='Number of passwords per Line to write in file. Default: 4'
     )
 
     parser.add_argument(
         '--offset',
+        action='store',
+        type=int,
         default=0,
         help='Start numbered Password list with this number. Default: 0'
     )
