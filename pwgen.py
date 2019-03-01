@@ -40,7 +40,7 @@ def is_pattern(pattern):
     return True
 
 
-def pwgen(pattern, a='abcdefghijklmnopqrstuvwxyz', A='ABCDEFGHIJKLMNOPQRSTUVWXYZ', b='1234567890', c='!$%&=_-+#'):
+def pwgen(pattern, a='abcdefghijklmnopqrstuvwxyz', A='ABCDEFGHIJKLMNOPQRSTUVWXYZ', b='1234567890', c='!@$%&=_-+#.:)(/*#?'):
     """
     generates a password with the given pattern
     
@@ -110,47 +110,84 @@ def getword(pattern=None):
 def main():
     import os
     import sys
-    filename = os.path.join("", "pwlist.txt")
-    fp = open(filename, "w")
+    import argparse
+    
     res = ""
     count = 0
-    # 100 paswörter erstellen
     lines = 140
+    perline = 4
+    seperator = "\t"
     offset = 0
     user_pattern = "aaaabbbaaa"
-    try:
-        user_pattern = sys.argv[1]
-    except:
-        pass
 
-    try:
-        lines = int(sys.argv[2])
-    except:
-        pass
+    parser = argparse.ArgumentParser(description="Generates a text file with a numbered List of Passwords.")
 
-    try:
-        count = int(sys.argv[3])
-    except:
-        pass
+    parser.add_argument(
+        '--file',
+        default="pwlist.txt",
+        help='Filename to save list of Passwords to. default: pwlist.txt'
+    )
+
+    parser.add_argument(
+        '--pattern',
+        default="aaaabbbaaa",
+        help='Provide a pattern for Password creation. aA letters, b Numerics, c Symbols, default: aaaabbbaaa'
+    )
+
+    parser.add_argument(
+        '--lines',
+        default=140,
+        help='Number of lines with passwords to write in file. Default: 140'
+    )
+
+    parser.add_argument(
+        '--perline',
+        default=4,
+        help='Number of passwords per Line to write in file. Default: 4'
+    )
+
+    parser.add_argument(
+        '--offset',
+        default=0,
+        help='Start numbered Password list with this number. Default: 0'
+    )
+
+    opt_args = parser.parse_args()  
+
+    user_pattern = opt_args.pattern
+
+    lines = int(opt_args.lines)
+
+    count = int(opt_args.offset)
+
+    perline = int(opt_args.perline)
+
+    filename = os.path.join("", opt_args.file)	
+    fp = open(filename, "w")
     
     if not is_pattern(user_pattern):
         user_pattern = "aaaabbbaaa"
         
     for i in range(0, lines):
-        w1 = getword(pattern=user_pattern)
-        w2 = getword(pattern=user_pattern)
-        w3 = getword(pattern=user_pattern)
-        w4 = getword(pattern=user_pattern)
-       
-        res += str(count+1) + "\t" + w1 + "\t" + str(count+2) + "\t" + w2 + "\t" + str(count+3) + "\t"+w3 + "\t" + \
-            str(count+4) + "\t" + w4 + "\n"
-        print str(count+1) + "\t" + w1 + "\t" + str(count+2) + "\t" + w2 + "\t" + str(count+3) + "\t"+w3 + "\t" + \
-            str(count+4) + "\t" + w4 + "\n"
-        count += 4
+        is_start = True
+        current_line = ""
+        for j in range(0, perline):
+            w = getword(pattern=user_pattern)
+            count += 1
+            if is_start:
+                is_start = False
+            else:
+                current_line += seperator
+            current_line += "{number:04d} {seperator} {word}".format(number=count, seperator=seperator, word=w)
+        current_line += "\n"
+
+        res += current_line
+        print(current_line)
     fp.write(res)
     fp.close()
         
     return 0
+
 
 if __name__ == '__main__':
     main()
